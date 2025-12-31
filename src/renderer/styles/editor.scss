@@ -1,0 +1,237 @@
+/**
+ * Code Editor Styles
+ */
+
+.code-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+  overflow: hidden;
+
+  &.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .empty-state {
+      text-align: center;
+      opacity: 0.5;
+
+      p {
+        margin: 0.5rem 0;
+        font-size: 1rem;
+
+        &.hint {
+          font-size: 0.875rem;
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #2a2a2a;
+    border-bottom: 1px solid #333;
+    flex-shrink: 0;
+    gap: 1rem;
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      min-width: 0;
+
+      .file-name {
+        font-weight: 600;
+        color: #e0e0e0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.875rem;
+      }
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+
+      .toolbar-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0 0.5rem;
+        border-right: 1px solid #333;
+
+        label {
+          font-size: 0.75rem;
+          opacity: 0.7;
+          white-space: nowrap;
+        }
+
+        input[type='range'] {
+          width: 80px;
+          height: 4px;
+          cursor: pointer;
+          accent-color: #667eea;
+        }
+
+        .font-size-value {
+          font-size: 0.75rem;
+          opacity: 0.7;
+          min-width: 35px;
+          text-align: right;
+        }
+      }
+
+      .toolbar-btn {
+        padding: 0.5rem;
+        background-color: transparent;
+        color: #e0e0e0;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        height: 32px;
+
+        &:hover {
+          background-color: rgba(102, 126, 234, 0.1);
+          border-color: #667eea;
+        }
+
+        &:active {
+          background-color: rgba(102, 126, 234, 0.2);
+        }
+
+        &.save {
+          background-color: rgba(76, 175, 80, 0.1);
+          border-color: #4caf50;
+          color: #4caf50;
+          font-size: 0.875rem;
+          padding: 0.5rem 0.75rem;
+          min-width: auto;
+
+          &:hover {
+            background-color: rgba(76, 175, 80, 0.2);
+          }
+        }
+      }
+    }
+  }
+
+  .editor-container {
+    flex: 1;
+    overflow: hidden;
+
+    // Monaco Editor overrides
+    :deep(.monaco-editor) {
+      background-color: #1e1e1e;
+
+      .margin {
+        background-color: #1e1e1e;
+      }
+
+      .line-numbers {
+        color: #666;
+      }
+
+      .current-line {
+        background-color: rgba(102, 126, 234, 0.1);
+      }
+
+      .selection {
+        background-color: rgba(102, 126, 234, 0.2);
+      }
+
+      .bracket-match {
+        background-color: rgba(102, 126, 234, 0.3);
+        border: 1px solid rgba(102, 126, 234, 0.5);
+      }
+
+      .find-widget {
+        background-color: #2a2a2a;
+        border: 1px solid #333;
+
+        input {
+          background-color: #1e1e1e;
+          color: #e0e0e0;
+          border: 1px solid #333;
+
+          &:focus {
+            border-color: #667eea;
+          }
+        }
+      }
+
+      .suggest-widget {
+        background-color: #2a2a2a;
+        border: 1px solid #333;
+
+        .monaco-list-row {
+          &:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+          }
+
+          &.selected {
+            background-color: rgba(102, 126, 234, 0.2);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Light theme overrides
+.code-editor.light {
+  background-color: #ffffff;
+
+  .editor-toolbar {
+    background-color: #f5f5f5;
+    border-bottom-color: #e0e0e0;
+
+    .file-name {
+      color: #333;
+    }
+
+    .toolbar-group {
+      border-right-color: #e0e0e0;
+
+      label,
+      .font-size-value {
+        color: #666;
+      }
+    }
+
+    .toolbar-btn {
+      color: #333;
+
+      &:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+      }
+    }
+  }
+
+  :deep(.monaco-editor) {
+    background-color: #ffffff;
+
+    .margin {
+      background-color: #f5f5f5;
+    }
+
+    .line-numbers {
+      color: #999;
+    }
+  }
+}

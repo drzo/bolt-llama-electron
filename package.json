@@ -1,0 +1,75 @@
+{
+  "name": "bolt-llama-electron",
+  "version": "1.0.0",
+  "main": "dist/main/index.js",
+  "description": "AI-powered web development with local LLM inference",
+  "homepage": "./",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:vite\" \"npm run dev:electron\"",
+    "dev:vite": "vite",
+    "dev:electron": "wait-on http://localhost:5173 && electron .",
+    "build": "npm run build:vite && npm run build:electron",
+    "build:vite": "tsc && vite build",
+    "build:electron": "tsc -p tsconfig.json && electron-builder",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext ts,tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,scss}\""
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "concurrently": "^8.2.2",
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12",
+    "sass": "^1.97.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "monaco-editor": "^0.55.1",
+    "node-llama-cpp": "^3.14.5",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "zustand": "^5.0.9"
+  },
+  "build": {
+    "appId": "com.bolt-llama.app",
+    "productName": "Bolt Llama",
+    "directories": {
+      "buildResources": "public",
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.developer-tools"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development"
+    }
+  }
+}
