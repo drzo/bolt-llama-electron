@@ -2,12 +2,11 @@
  * Electron Main Process Entry Point
  */
 
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import isDev from 'electron-is-dev';
 import { IPCHandler } from './ipc-handlers';
 import { getFileManager } from './file-manager';
-import { getLLMEngine } from './llm-engine';
 
 let mainWindow: BrowserWindow | null = null;
 let ipcHandler: IPCHandler | null = null;
@@ -25,7 +24,6 @@ function createWindow(): void {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-      enableRemoteModule: false,
       sandbox: true,
     },
     icon: path.join(__dirname, '../../public/icon.png'),

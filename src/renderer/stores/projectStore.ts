@@ -3,7 +3,7 @@
  */
 
 import { create } from 'zustand';
-import { FileInfo, ProjectMetadata } from '@shared/types';
+import { ProjectMetadata } from '@shared/types';
 
 interface ProjectState {
   // State

@@ -2,7 +2,7 @@
  * Code Editor Component - Monaco Editor integration
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 import { useProjectStore } from '../stores/projectStore';
 import { useEditorStore } from '../stores/editorStore';
@@ -14,7 +14,7 @@ export const CodeEditor: React.FC = () => {
   const monacoEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false); // Unused for now
 
   const currentFile = useProjectStore((state) => state.currentFile);
   const files = useProjectStore((state) => state.files);
@@ -23,7 +23,6 @@ export const CodeEditor: React.FC = () => {
 
   const fontSize = useEditorStore((state) => state.fontSize);
   const theme = useEditorStore((state) => state.theme);
-  const language = useEditorStore((state) => state.language);
   const wordWrap = useEditorStore((state) => state.wordWrap);
   const minimap = useEditorStore((state) => state.minimap);
   const autoSave = useEditorStore((state) => state.autoSave);

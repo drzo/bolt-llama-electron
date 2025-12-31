@@ -2,9 +2,8 @@
  * Main App Component - Full application layout
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useProjectStore } from './stores/projectStore';
-import { useChatStore } from './stores/chatStore';
 import { useEditorStore } from './stores/editorStore';
 import { IPCClient } from './utils/ipc-client';
 import ChatInterface from './components/ChatInterface';
@@ -55,6 +54,7 @@ export default function App() {
       } catch (err) {
         console.error('Failed to initialize app:', err);
         setError(err instanceof Error ? err.message : String(err));
+        return () => {}; // Return empty cleanup function on error
       }
     };
 
@@ -82,7 +82,7 @@ export default function App() {
 
         // Select first file
         if (result.files.length > 0) {
-          const firstFile = result.files.find((f) => f.type === 'file');
+          const firstFile = result.files.find((f: any) => f.type === 'file');
           if (firstFile) {
             setCurrentFile(firstFile.path);
           }

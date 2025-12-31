@@ -5,7 +5,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { watch } from 'fs';
-import { FileInfo, FileOperation, FileOperationResult, ProjectMetadata } from '@shared/types';
+import { FileInfo, ProjectMetadata } from '@shared/types';
 import { PROJECT_TEMPLATES } from '@shared/constants';
 
 export class FileManager {

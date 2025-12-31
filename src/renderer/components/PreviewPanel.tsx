@@ -12,7 +12,7 @@ export const PreviewPanel: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const files = useProjectStore((state) => state.files);
-  const projectName = useProjectStore((state) => state.projectName);
+  // const projectName = useProjectStore((state) => state.projectName); // Unused for now
 
   // Update preview when files change
   useEffect(() => {
@@ -65,12 +65,12 @@ export const PreviewPanel: React.FC = () => {
     updatePreview();
   };
 
-  const handleOpenDevTools = () => {
-    const iframeWindow = iframeRef.current?.contentWindow;
-    if (iframeWindow) {
-      iframeWindow.open('about:blank', '_blank');
-    }
-  };
+  // const handleOpenDevTools = () => {
+  //   const iframeWindow = iframeRef.current?.contentWindow;
+  //   if (iframeWindow) {
+  //     iframeWindow.open('about:blank', '_blank');
+  //   }
+  // };
 
   return (
     <div className="preview-panel">

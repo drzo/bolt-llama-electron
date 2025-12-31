@@ -4,10 +4,9 @@
 
 import { ipcMain, BrowserWindow } from 'electron';
 import { IPC_CHANNELS } from '@shared/ipc-channels';
-import { GenerationRequest, GenerationResponse, FileOperation, FileOperationResult } from '@shared/types';
+import { GenerationRequest, GenerationResponse } from '@shared/types';
 import { LLMEngine, getLLMEngine } from './llm-engine';
 import { FileManager, getFileManager } from './file-manager';
-import path from 'path';
 
 export class IPCHandler {
   private llmEngine: LLMEngine;

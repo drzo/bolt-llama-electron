@@ -25,7 +25,7 @@ export const FileExplorer: React.FC = () => {
   const projectName = useProjectStore((state) => state.projectName);
   const currentFile = useEditorStore((state) => state.selectedFile);
   const setCurrentFile = useEditorStore((state) => state.setSelectedFile);
-  const files = useProjectStore((state) => state.files);
+  // const files = useProjectStore((state) => state.files); // Unused for now
   const deleteFile = useProjectStore((state) => state.deleteFile);
 
   // Load project files

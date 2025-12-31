@@ -47,7 +47,7 @@ export class LLMEngine {
       });
 
       this.context = await this.model.createContext({
-        maxTokens: this.config.contextSize,
+        contextSize: this.config.contextSize,
         batchSize: this.config.batchSize,
       });
 
