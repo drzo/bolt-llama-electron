@@ -1,0 +1,165 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: macos-latest
+            artifact_name: Bolt-Llama-*.dmg
+            asset_name: Bolt-Llama-macOS
+          - os: ubuntu-latest
+            artifact_name: Bolt-Llama-*.AppImage
+            asset_name: Bolt-Llama-Linux
+          - os: windows-latest
+            artifact_name: Bolt-Llama-Setup-*.exe
+            asset_name: Bolt-Llama-Windows
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Electron app
+        run: npm run build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload artifacts (macOS)
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: |
+            release/*.dmg
+            release/*.zip
+          retention-days: 5
+      
+      - name: Upload artifacts (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: |
+            release/*.AppImage
+            release/*.deb
+          retention-days: 5
+      
+      - name: Upload artifacts (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: |
+            release/*.exe
+          retention-days: 5
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+      
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release v${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Bolt Llama v${{ steps.version.outputs.VERSION }}
+            
+            AI-powered web development with local LLM inference.
+            
+            ### Downloads
+            
+            - **macOS**: Download the `.dmg` file
+            - **Linux**: Download the `.AppImage` or `.deb` file
+            - **Windows**: Download the `.exe` installer
+            
+            ### Installation
+            
+            #### macOS
+            1. Download `Bolt-Llama-macOS.dmg`
+            2. Open the DMG file
+            3. Drag Bolt Llama to Applications folder
+            
+            #### Linux
+            1. Download `Bolt-Llama-Linux.AppImage`
+            2. Make it executable: `chmod +x Bolt-Llama-*.AppImage`
+            3. Run: `./Bolt-Llama-*.AppImage`
+            
+            Or install the `.deb` package:
+            ```bash
+            sudo dpkg -i Bolt-Llama-*.deb
+            ```
+            
+            #### Windows
+            1. Download `Bolt-Llama-Windows-Setup.exe`
+            2. Run the installer
+            3. Follow installation wizard
+            
+            ### What's New
+            
+            - Initial release with full Electron + node-llama-cpp integration
+            - AI-powered code generation with local LLM
+            - Monaco code editor with syntax highlighting
+            - Live HTML/CSS/JS preview
+            - Project file management
+            - Cross-platform support
+            
+            ### Requirements
+            
+            - **RAM**: 8GB minimum (16GB+ recommended)
+            - **Disk Space**: 10GB+ for models
+            - **GPU** (Optional): NVIDIA, AMD, or Apple Silicon for acceleration
+            
+            ### Getting Started
+            
+            1. Download and install the app for your platform
+            2. Download a GGUF model (CodeLlama, Mistral, DeepSeek Coder)
+            3. Place model in `~/.bolt-llama/models/`
+            4. Launch Bolt Llama
+            5. Create a new project and start coding!
+            
+            For detailed instructions, see the [README](https://github.com/drzo/bolt-llama-electron/blob/master/README.md).
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/**/*.dmg
+            artifacts/**/*.zip
+            artifacts/**/*.AppImage
+            artifacts/**/*.deb
+            artifacts/**/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
