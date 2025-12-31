@@ -59,6 +59,10 @@ $transition-slow: 500ms ease-in-out;
   flex-direction: column;
 }
 
+@mixin flex {
+  display: flex;
+}
+
 @mixin scrollbar {
   &::-webkit-scrollbar {
     width: 8px;
